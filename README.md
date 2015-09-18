@@ -18,5 +18,5 @@ information, please see Bro's home page:
     
 Setup:
 Before setup bro with kafka, you need setup librdkafka, here: https://github.com/edenhill/librdkafka.
-After librdkafka has been setup, we can setup bro with kafka.
 
+After librdkafka has been setup, we can setup bro with kafka.
