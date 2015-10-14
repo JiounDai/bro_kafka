@@ -1,6 +1,8 @@
 # bro_kafka
 bro with kafka, add writers of kafka, in directory of src/logging/writers/kafka
 
+the conf of kafka : scripts/base/frameworks/logging/writers/kafka.bro, config your kafka address
+
 Bro is a powerful framework for network analysis and security monitoring.
 You can download source and binary releases on:
 
