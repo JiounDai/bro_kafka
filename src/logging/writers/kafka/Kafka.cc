@@ -71,10 +71,14 @@ Kafka::~Kafka()
     delete [] topic_name;
     delete [] client_id;
     delete [] compression_codec;
-    if (producer)
+    if (producer){
         delete producer;
-    if (topic)
+    }
+        
+    if (topic){
         delete topic;
+    }
+        
     //delete json_formatter;
     delete ascii_formatter;
 }
@@ -149,10 +153,11 @@ bool Kafka::DoWrite(int num_fields, const Field* const * fields, Value** vals)
 
     buffer.AddRaw("\n", 1);
 
-    //counter++;
-    //if ( counter >= BifConst::LogKafka::max_batch_size ||
-    //    uint(buffer.Len()) >= BifConst::LogKafka::max_byte_size )
-    BatchIndex();
+    counter++;
+    if ( counter >= BifConst::LogKafka::max_batch_size ||
+       uint(buffer.Len()) >= BifConst::LogKafka::max_byte_size ){
+        BatchIndex();
+    }
 
     return true;
     }
