@@ -7,4 +7,6 @@ const compression_codec: string;
 const max_batch_size: count;
 const max_batch_interval: interval;
 const max_byte_size: count;
+const queue_buffer_max_messages: string;
+const batch_num_messages: string;
 #const json_timestamps: JSON::TimestampFormat;

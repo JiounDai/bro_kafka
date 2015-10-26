@@ -51,6 +51,16 @@ Kafka::Kafka(WriterFrontend* frontend) : WriterBackend(frontend)
     compression_codec = new char[compression_codec_len + 1];
     memcpy(compression_codec, BifConst::LogKafka::compression_codec->Bytes(), compression_codec_len);
     compression_codec[compression_codec_len] = 0;
+    
+    int queue_max_len = BifConst::LogKafka::queue_buffer_max_messages->Len();
+    queue_buffer_max_messages = new char[queue_max_len + 1];
+    memcpy(queue_buffer_max_messages, BifConst::LogKafka::queue_buffer_max_messages->Bytes(), queue_max_len);
+    queue_buffer_max_messages[queue_max_len] = 0;
+
+    int batch_num_messages_len = BifConst::LogKafka::batch_num_messages->Len();
+    batch_num_messages = new char[batch_num_messages_len + 1];
+    memcpy(batch_num_messages, BifConst::LogKafka::batch_num_messages->Bytes(), batch_num_messages_len);
+    batch_num_messages[batch_num_messages_len] = 0;
 
     buffer.Clear();
     counter = 0;
@@ -71,6 +81,9 @@ Kafka::~Kafka()
     delete [] topic_name;
     delete [] client_id;
     delete [] compression_codec;
+    delete [] queue_buffer_max_messages;
+    delete [] batch_num_messages;
+
     if (producer){
         delete producer;
     }
@@ -95,6 +108,8 @@ bool Kafka::DoInit(const WriterInfo& info, int num_fields, const threading::Fiel
 
     conf->set("compression.codec", compression_codec, errstr);
     conf->set("client.id", client_id, errstr);
+    conf->set("queue.buffering.max.messages", queue_buffer_max_messages, errstr);
+    conf->set("batch.num.messages", batch_num_messages, errstr);
 
     //int32_t partition = RdKafka::Topic::PARTITION_UA;
     //partition = 1;
@@ -136,7 +151,7 @@ bool Kafka::BatchIndex()
 #endif
     producer->poll(0);
     buffer.Clear();
-    counter = 0;
+    //counter = 0;
     last_send = current_time();
 
     return true;
@@ -153,11 +168,14 @@ bool Kafka::DoWrite(int num_fields, const Field* const * fields, Value** vals)
 
     buffer.AddRaw("\n", 1);
 
+    /*
     counter++;
     if ( counter >= BifConst::LogKafka::max_batch_size ||
        uint(buffer.Len()) >= BifConst::LogKafka::max_byte_size ){
         BatchIndex();
     }
+    */
+    BatchIndex();
 
     return true;
     }

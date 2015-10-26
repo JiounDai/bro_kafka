@@ -55,6 +55,8 @@ private:
     int client_id_len;
     char* compression_codec;
     int compression_codec_len;
+    char *queue_buffer_max_messages;
+    char *batch_num_messages;
 
     std::string errstr;
     RdKafka::Conf *conf;
