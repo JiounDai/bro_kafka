@@ -32,6 +32,12 @@ export {
     ## insert API.
     const max_byte_size = 1024 * 1024 &redef;
 
+    ## Maximum number of messages allowed on the producer queue
+    const queue_buffer_max_messages = "2000000" &redef;
+
+    ## Maximum number of messages batched in one MessageSet
+    const batch_num_messages = "100" &redef;
+
     ## Format of timestamps when writing out JSON. By default, the JSON formatter will
     ## use double values for timestamps which represent the number of seconds from the
     ## UNIX epoch.
